@@ -32,4 +32,4 @@ I also implemented a feature exceptionally for German language, where if a word 
 The words are presented as checkbuttons. The program currently has two operations with the words in this mode: deletion and practice.
 Practice works exactly as mentioned above, aside from that in this case only selected words, which may help the user polish their awareness of concrete vocabulary. After exitting practice, the app will return the user's score in percent format, rounded to tenths.
 Deletion is achieved by checking unnecessary prompts and pressing "Remove". The whole frame is updated in order to prevent any interaction with removed units.
-In addition the user can refresh printed vocabulary by passing in a word or the beginning of the word into the entry and pressing "Sumbit word".
+In addition the user can refresh printed vocabulary by passing in a word or the beginning of the word into the entry and pressing "Submit word".

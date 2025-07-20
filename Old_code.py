@@ -1,3 +1,7 @@
+# just for review and history of my improvement!
+# this code is unoptimized and inexpert!
+
+
 import json
 import random
 import tkinter as tk

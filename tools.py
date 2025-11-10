@@ -1,6 +1,7 @@
-from json import dump, load
+from json import JSONDecodeError, dump, load
 from typing import Any
 from enum import StrEnum
+import sys
 
 
 class JsonMode(StrEnum):
@@ -22,7 +23,15 @@ def manipulate_json(
 ) -> Any | None:
     with open(path, mode) as js_file:
         match mode:
-            case mode.read:
-                return load(js_file)
-            case mode.write:
+            case JsonMode.read:
+                try:
+                    data = load(js_file)
+                    return data if data else {}
+                except JSONDecodeError:
+                    sys.stderr.write(
+                        "Json file is corrupted. Try validating it"
+                    )
+                    sys.exit(1)
+
+            case JsonMode.write:
                 dump(content, js_file)

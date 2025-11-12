@@ -1,12 +1,10 @@
 from dict_state import Session
-from tools import (
-    JsonMode,
-    manipulate_json,
-)
+from tools import JsonMode, manipulate_json, PracticeType
 from json import JSONDecodeError
 import sys
 from os import system
 from random import choice
+from time import sleep
 
 
 class GeneralMode:
@@ -67,8 +65,12 @@ class InputMode:
 class PracticeMode:
     @staticmethod
     def submit(session: Session) -> None:
-        data: tuple[tuple[str, str], ...] = tuple(
-            manipulate_json(session.main_dict_path, JsonMode.read).items()
+        data: tuple[tuple[str, str], ...] = (
+            tuple(
+                manipulate_json(session.main_dict_path, JsonMode.read).items()
+            )
+            if session.practice_type == PracticeType.normal
+            else tuple(session.local_dict.items())
         )
         while True:
             chosen_word: tuple[str, str] = choice(data)
@@ -77,6 +79,7 @@ class PracticeMode:
                 case word if word == chosen_word[0]:
                     session.correct_count += 1
                     print("good job")
+                    sleep(1)
                 case "1":
                     PracticeMode.leave(session)
                     break
@@ -85,6 +88,9 @@ class PracticeMode:
                     print(
                         f"the word was {chosen_word[0]}. If you want to leave, type 1"
                     )
+                    sleep(3)
+
+            system("cls")
 
     @staticmethod
     def leave(session: Session) -> None:
@@ -92,6 +98,11 @@ class PracticeMode:
         print(
             f"you got {(session.correct_count / (session.correct_count + session.incorrect_count)) * 100:.1f}%"
         )
+        session.local_dict.clear()
+        if session.practice_type == PracticeType.local:
+            manipulate_json(session.local_dict_path, JsonMode.write)
+
+        session.practice_type = PracticeType.normal
         session.mode = GeneralMode
 
 
@@ -99,17 +110,24 @@ class SearchMode:
     @staticmethod
     def submit(session: Session) -> None:
         data: dict[str, str] = manipulate_json(
-            session.main_dict_path, JsonMode.read, session.main_dict
+            session.main_dict_path, JsonMode.read
         )
         while True:
-            print("type the desired word, or 1 to start practising:")
-            desired_word: str = input()
+            desired_word: str = input(
+                "type the desired word, 1 to proceed to the main menu, or 2 to start practising: "
+            )
             if desired_word == "1":
+                SearchMode.leave()
+                break
+
+            if desired_word == "2":
+                session.practice_type = PracticeType.local
                 session.mode = PracticeMode
                 break
 
             if desired_word in data.keys():
-                session[desired_word] = data[desired_word]
+                session.local_dict[desired_word] = data[desired_word]
+                print(f"selected word: {desired_word}")
             else:
                 print(
                     f"the prompt {desired_word} was not found in the main dictionary"
@@ -118,6 +136,7 @@ class SearchMode:
     @staticmethod
     def leave(session: Session) -> None:
         system("cls")
+        session.local_dict.clear()
         session.mode = GeneralMode
 
 

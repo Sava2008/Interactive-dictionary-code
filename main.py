@@ -7,7 +7,6 @@ from dict_control import (
 )
 import dict_state
 import sys
-from os import system
 
 
 def main() -> None:
@@ -31,8 +30,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(e)
-        system("pause")
+    main()

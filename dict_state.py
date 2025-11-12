@@ -22,6 +22,6 @@ class Session:
 
         self.practice_random_word: tuple[str, str] | None = None
 
-        self.corrent_count: int = 0
-        self.incorrent_count: int = 0
+        self.correct_count: int = 0
+        self.incorrect_count: int = 0
         self.word_count: int = 0

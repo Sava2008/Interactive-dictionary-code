@@ -1,6 +1,6 @@
 from json import JSONDecodeError, dump, load
 from typing import Any
-from enum import StrEnum
+from enum import StrEnum, Enum
 import sys
 
 
@@ -9,13 +9,9 @@ class JsonMode(StrEnum):
     read = "r"
 
 
-class RgbColor(StrEnum):
-    toplevel_bg = "#1b1b1b"
-    text = "#EDE9F0"
-    button_bg = "#504A4B"
-    entry_bg = "#69677C"
-    red = "#990F02"
-    green = "#0B6623"
+class PracticeType(Enum):
+    normal = 0
+    local = 1
 
 
 def manipulate_json(
@@ -34,4 +30,4 @@ def manipulate_json(
                     sys.exit(1)
 
             case JsonMode.write:
-                dump(content, js_file)
+                dump(content, js_file, indent=4)

@@ -7,16 +7,18 @@ from dict_control import (
 )
 import dict_state
 import sys
+import os
 
 
 def main() -> None:
+    current_dir = os.path.dirname(__file__)
     session: dict_state.Session = dict_state.Session(
         "Sava Dictionary 1.3.0",
         (1000, 600),
-        "Images/Icon.ico",
-        "JSON_dicts/main_dict.json",
-        "JSON_dicts/local_dict.json",
-        "JSON_dicts/spare_dict.json",
+        os.path.join(current_dir, r"Images\Icon.ico"),
+        os.path.join(current_dir, r"JSON_dicts\main_dict.json"),
+        os.path.join(current_dir, r"JSON_dicts\local_dict.json"),
+        os.path.join(current_dir, r"JSON_dicts\spare_dict.json"),
     )
     session.mode = GeneralMode
     start(session)
@@ -30,4 +32,8 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(e)
+        input()

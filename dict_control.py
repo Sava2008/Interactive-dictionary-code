@@ -7,6 +7,7 @@ from json import JSONDecodeError
 import sys
 from os import system
 from random import choice
+from time import sleep
 
 
 class GeneralMode:
@@ -69,22 +70,25 @@ class PracticeMode:
     def submit(session: Session) -> None:
         data: tuple[tuple[str, str], ...] = tuple(
             manipulate_json(session.main_dict_path, JsonMode.read).items()
+            if not session.local_dict
+            else session.local_dict.items()
         )
         while True:
+            system("cls")
             chosen_word: tuple[str, str] = choice(data)
             print(f"{chosen_word[1]} - ", end="")
             match input():
                 case word if word == chosen_word[0]:
                     session.correct_count += 1
                     print("good job")
+                    sleep(0.8)
                 case "1":
                     PracticeMode.leave(session)
                     break
                 case _:
                     session.incorrect_count += 1
-                    print(
-                        f"the word was {chosen_word[0]}. If you want to leave, type 1"
-                    )
+                    print(f'the word was "{chosen_word[0]}"')
+                    sleep(2.5)
 
     @staticmethod
     def leave(session: Session) -> None:
@@ -102,14 +106,22 @@ class SearchMode:
             session.main_dict_path, JsonMode.read, session.main_dict
         )
         while True:
-            print("type the desired word, or 1 to start practising:")
+            print(
+                "type the desired word, 0 to start practising, or 1 to quit:"
+            )
             desired_word: str = input()
-            if desired_word == "1":
+            if desired_word == "0":
                 session.mode = PracticeMode
+                break
+            elif desired_word == "1":
+                session.mode = GeneralMode
                 break
 
             if desired_word in data.keys():
-                session[desired_word] = data[desired_word]
+                session.local_dict[desired_word] = data[desired_word]
+                print(
+                    f"successfully added {desired_word} into the local dictionary"
+                )
             else:
                 print(
                     f"the prompt {desired_word} was not found in the main dictionary"

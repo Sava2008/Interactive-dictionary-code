@@ -92,6 +92,7 @@ class PracticeMode:
 
     @staticmethod
     def leave(session: Session) -> None:
+        session.local_dict.clear()
         system("cls")
         print(
             f"you got {(session.correct_count / (session.correct_count + session.incorrect_count)) * 100:.1f}%"
@@ -134,8 +135,6 @@ class SearchMode:
 
 
 def start(session: Session) -> None:
-    manipulate_json(session.local_dict_path, JsonMode.write, None)
-
     try:
         session.main_dict = manipulate_json(
             session.main_dict_path, JsonMode.read

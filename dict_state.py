@@ -5,7 +5,6 @@ class Session:
         scales: tuple[int, int],
         icon_path: str,
         main_dict_path: str,
-        local_dict_path: str,
         spare_dict_path: str,
     ) -> None:
         self.mode = None
@@ -13,7 +12,6 @@ class Session:
         self.main_dict: dict[str, str] | None = None
         self.local_dict: dict[str, str] = {}
         self.main_dict_path: str = main_dict_path
-        self.local_dict_path: str = local_dict_path
         self.spare_dict_path: str = spare_dict_path
 
         self.win_title: str = title

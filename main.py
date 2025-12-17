@@ -17,7 +17,6 @@ def main() -> None:
         (1000, 600),
         os.path.join(current_dir, r"Images\Icon.ico"),
         os.path.join(current_dir, r"JSON_dicts\main_dict.json"),
-        os.path.join(current_dir, r"JSON_dicts\local_dict.json"),
         os.path.join(current_dir, r"JSON_dicts\spare_dict.json"),
     )
     session.mode = GeneralMode

@@ -3,6 +3,7 @@ from dict_control import (
     InputMode,
     PracticeMode,
     SearchMode,
+    TranslationMode,
     start,
 )
 import dict_state
@@ -23,7 +24,13 @@ def main() -> None:
     start(session)
     while True:
         match session.mode:
-            case m if m in (GeneralMode, InputMode, PracticeMode, SearchMode):
+            case m if m in (
+                GeneralMode,
+                InputMode,
+                PracticeMode,
+                SearchMode,
+                TranslationMode,
+            ):
                 m.submit(session)
             case _:
                 sys.stderr.write("Unknown mode")

@@ -15,7 +15,7 @@ class GeneralMode:
     def submit(session: Session) -> None:
         while True:
             print(
-                "enter the desired mode:\n1 - input mode\n2 - practice mode\n3 - search mode\n4 - quit"
+                "enter the desired mode:\n1 - input mode\n2 - practice mode\n3 - search mode\n4 - translation mode\n5 - quit"
             )
             match input():
                 case "i" | "1":
@@ -27,7 +27,10 @@ class GeneralMode:
                 case "s" | "3":
                     session.mode = SearchMode
                     break
-                case "q" | "e" | "4":
+                case "t" | "4":
+                    session.mode = TranslationMode
+                    break
+                case "q" | "e" | "5":
                     sys.exit(0)
                 case _:
                     print("bad mode argument choose one: 1, 2, 3 or 4")
@@ -127,6 +130,29 @@ class SearchMode:
                 print(
                     f"the prompt {desired_word} was not found in the main dictionary"
                 )
+
+    @staticmethod
+    def leave(session: Session) -> None:
+        system("cls")
+        session.mode = GeneralMode
+
+
+class TranslationMode:
+    @staticmethod
+    def submit(session: Session) -> None:
+        while True:
+            user_query: str = input("enter the word or 1 to exit:")
+            if user_query == "1":
+                TranslationMode.leave(session)
+                break
+            if user_query in session.main_dict.keys():
+                print(session.main_dict[user_query])
+                return
+            for foreign, native in session.main_dict.items():
+                if user_query == native:
+                    print(foreign)
+                    return
+            print(f"{user_query} was not found in the main dictionary")
 
     @staticmethod
     def leave(session: Session) -> None:
